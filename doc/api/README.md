@@ -2,10 +2,10 @@
 
 ## Run the API
 ```
-poetry run python3 -m uvicorn app:api --reload
+docker compose run --rm api
 ```
 
-## Doc API
+## See API Documentation
 * `http://localhost:8000/docs`
 * `http://localhost:8000/redoc`
 
@@ -13,5 +13,11 @@ poetry run python3 -m uvicorn app:api --reload
 
 * Simple GET
 ``` 
-curl -X GET -i http://127.0.0.1:8000/
+curl -X GET -i http://172.19.0.5:8000/
+```
+
+## Kill API
+```
+docker container stop reco_api
+docker container rm reco_api
 ```
