@@ -1,0 +1,40 @@
+services:
+  api:
+    image: project/mlops_project/api:0.0
+    container_name: reco_api
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      target: api
+    environment:
+      - LOG__LEVEL=debug
+    volumes:
+      - ./pyproject.toml:/opt/workspace/pyproject.toml
+      - ./models:/opt/workspace/models
+      - ./src/api:/opt/workspace/src/api
+    network_mode: host
+    # networks:
+    #   reco_network:
+    #     ipv4_address: 172.19.0.5
+    ports:
+      - "8000:8000"
+    command: bash
+
+#   test_api:
+#     image: python:3.12
+#     depends_on:
+#       - api
+#     networks:
+#       - reco_network
+#     ports:
+#       - "8000:8000"
+#     command: bash
+
+# networks:
+#   reco_network:
+#     name: reco_network
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.19.0.0/16
+#           gateway: 172.19.0.1

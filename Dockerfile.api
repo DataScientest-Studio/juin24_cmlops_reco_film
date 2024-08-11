@@ -1,0 +1,26 @@
+####################################################################
+# Base image
+####################################################################
+FROM python:3.12 as base
+
+# set the working directory in the container
+WORKDIR /opt/workspace
+
+# install dependencies
+COPY ./pyproject.toml ./pyproject.toml
+RUN python -m pip install --upgrade pip
+RUN python -m pip install poetry
+RUN poetry config virtualenvs.create false
+
+####################################################################
+# API image
+####################################################################
+FROM base as api
+
+# Copy API sources
+COPY ./src/api ./src/api
+
+# Set the working directory in the container
+WORKDIR /opt/workspace/src/api
+
+RUN poetry install
