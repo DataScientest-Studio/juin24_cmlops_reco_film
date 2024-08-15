@@ -1,7 +1,44 @@
-Project Name
-==============================
+# Reco Film
 
-This project is a starting Pack for MLOps projects based on the subject "movie_recommandation". It's not perfect so feel free to make some modifications on it.
+## Description
+
+## Run the project
+
+This project uses a [docker-compose](docker-compose.yml) to provides `services` relatives to our projects.
+Here is the list of all our services:
+* `api` provides project API 
+* `dev` to develop the project using a docker container
+
+### Run API
+* Run API:
+```
+docker compose up api
+```
+
+When the API is running, the API documentation is provided here: [http://172.19.0.5:8000/docs](localhost:8000/docs).
+
+* Test API:
+```
+curl -X GET -i http://172.19.0.5:8000/
+```
+
+* Kill API:
+```
+docker container stop reco_api
+```
+
+### Dev
+TODO
+
+## Technical documentation
+
+### Dev
+To develop we recommend to use VSCode with extention [ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
+
+
+### Architecture
+
+This project is a starting Pack for MLOps projects based on the subject "movie_recommandation".
 
 Project Organization
 ------------

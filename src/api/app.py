@@ -10,23 +10,20 @@ api = FastAPI(
     description="Todo.",
     version="0.0.1",
     openapi_tags=[
-        {"name": "bd", "description": "bd functions"},
         {
-            "name": "other",
-            "description": "functions that are used to deal with items",
+            "name": "test",
+            "description": "test API is running",
         },
+        {"name": "inference", "description": "todo"},
     ],
 )
 
 
-# Return a welcome message
-# - Route: GET /
-# - Test: curl -X GET -i http://127.0.0.1:8000/
-@api.get("/", name="Hello World", tags=["other"])
-def get_welcome() -> str:
-    """Welcome message
+@api.get("/", name="Hello World", tags=["test"])
+def get_hello() -> dict:
+    """Hello message
 
     Returns:
-        str: welcome message
+        dict: hello message
     """
-    return "*** Welcome to RecoFilm API! ***"
+    return {"message": "Hello"}
