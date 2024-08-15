@@ -14,6 +14,17 @@ services:
     ports:
       - "8000:8000"
 
+  test_api:
+    image: python:3.10
+    depends_on:
+      - api
+    environment:
+      - IPV4_API=172.19.0.5
+    networks:
+      - reco_network
+    ports:
+      - "8000:8000"
+
   dev:
     image: project/mlops_project/dev:0.0
     container_name: reco_dev
@@ -26,12 +37,13 @@ services:
     volumes:
       - ./pyproject.toml:/opt/workspace/pyproject.toml
       - ./models:/opt/workspace/models
+      - ./data:/opt/workspace/data
       - ./src:/opt/workspace/src
       - ./app.py:/opt/workspace/app.py
-    depends_on:
-      - api
-    networks:
-      - reco_network
+      - ./api.py:/opt/workspace/api.py
+      - ./test.py:/opt/workspace/test.py
+      - ./tests:/opt/workspace/tests
+    network_mode: host
     ports:
       - "8000:8000"
     command: bash

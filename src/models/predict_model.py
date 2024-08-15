@@ -3,12 +3,12 @@ import pickle
 import numpy as np
 
 
-def make_predictions(users_id, model_filename, user_matrix_filename):
+def make_predictions(users_ids, model_filename, user_matrix_filename):
     # Read user_matrix
     users = pd.read_csv(user_matrix_filename)
 
     # Filter with the list of users_id
-    users = users[users["userId"].isin(users_id)]
+    users = users[users["userId"].isin(users_ids)]
 
     # Delete userId
     users = users.drop("userId", axis=1)
