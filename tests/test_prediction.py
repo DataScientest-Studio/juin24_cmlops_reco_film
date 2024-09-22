@@ -1,5 +1,6 @@
 import unittest
 
+import numpy as np
 
 from src.models.predict_model import make_predictions
 
@@ -13,4 +14,4 @@ class TestPrediction(unittest.TestCase):
             model_filename="models/model.pkl",
             user_matrix_filename="data/processed/user_matrix.csv",
         )
-        print(list(predictions))
+        self.assertTrue(len(list(predictions)), 1)
