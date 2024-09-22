@@ -1,6 +1,5 @@
 import unittest
 
-import numpy as np
 
 from src.models.predict_model import make_predictions
 
