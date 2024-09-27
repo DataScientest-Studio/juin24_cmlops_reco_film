@@ -1,6 +1,6 @@
 # Reco Film
 
-## Description
+This project aims to provide a service to recommend movies to users. It is developed as the final project of MLOps formation from DataScientest.
 
 ## Run the project
 
@@ -34,7 +34,7 @@ curl -X 'GET' \
 docker container stop reco_api
 ```
 
-### Dev
+### Dev mode
 
 * Run the dev container:
 ```
@@ -43,28 +43,19 @@ docker compose run --rm dev
 
 You are now inside the container. 
 
-#### Test code from DataScientest 
-NB: to rm after refacto !
-
-* Get data:
-```
-poetry run python src/data/import_raw_data.py
-```
-
 * Construct the dataset:
 ```
-poetry run python src/data/make_dataset.py data/raw data/processed
-```
-
-Create folder `data/processed`.
-
-```
-poetry run python src/features/build_features.py
+poetry run python app.py dataset
 ```
 
 * Prediction:
 ```
-poetry run python src/models/predict_model.py
+poetry run python app.py predict
+```
+
+* Test
+```
+poetry run pytest -s
 ```
 
 ### Dev API
@@ -75,14 +66,11 @@ uvicorn api:api --host 0.0.0.0 --port 8000 --reload
 
 * See doc here:[http://localhost:8000/docs](http://localhost:8000/docs)
 
-* Test your code:
-```
-poetry run python test.py
-```
 
 ## Technical documentation
+* [Cahier des charges](https://docs.google.com/document/d/11B940u5Z8is7Wlj7b0wzkA4UE-wqW9eDQh4Fcw8SisY/edit?usp=sharing)
 
-### Technical choices
+### Dev choices
 
 * To develop we recommend to use VSCode with extension [ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
 
@@ -90,8 +78,7 @@ poetry run python test.py
 
 
 ### Architecture
-
-## References
+TODO
 
 ### Useful
 * [project template](https://github.com/DataScientest-Studio/Template_MLOps_movie_recommandation)

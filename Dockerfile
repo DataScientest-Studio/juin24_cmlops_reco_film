@@ -12,15 +12,16 @@ RUN python -m pip install --upgrade pip
 RUN python -m pip install poetry
 RUN poetry config virtualenvs.create false
 
-####################################################################
-# API image
-####################################################################
-FROM base as api
-
 # Copy sources needed for API
 COPY ./models ./models
 COPY ./src ./src
 COPY ./api.py ./app.py
+COPY README.md README.md
+
+####################################################################
+# API image
+####################################################################
+FROM base as api
 
 # Set the working directory in the container
 WORKDIR /opt/workspace

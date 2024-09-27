@@ -3,9 +3,9 @@ from sklearn.preprocessing import LabelEncoder
 import os
 
 
-def read_ratings(ratings_csv, data_dir="data/raw") -> pd.DataFrame:
+def read_ratings(ratings_csv: str, data_dir: str) -> pd.DataFrame:
     """
-    Reads a ratings.csv from the data/raw folder.
+    Reads a ratings.csv from the raw folder.
 
     Parameters
     -------
@@ -25,7 +25,7 @@ def read_ratings(ratings_csv, data_dir="data/raw") -> pd.DataFrame:
     return data
 
 
-def read_movies(movies_csv, data_dir="data/raw") -> pd.DataFrame:
+def read_movies(movies_csv: str, data_dir: str) -> pd.DataFrame:
     """
     Reads a movies.csv from the data/raw folder.
 
@@ -50,7 +50,7 @@ def read_movies(movies_csv, data_dir="data/raw") -> pd.DataFrame:
     return result_df
 
 
-def create_user_matrix(ratings, movies):
+def create_user_matrix(ratings: pd.DataFrame, movies: pd.DataFrame) -> pd.DataFrame:
     # merge the 2 tables together
     movie_ratings = ratings.merge(movies, on="movieId", how="inner")
 
@@ -67,12 +67,17 @@ def create_user_matrix(ratings, movies):
     return user_matrix
 
 
-if __name__ == "__main__":
+def process_raw(raw_dir: str, dataset_dir: str) -> str:
+    # Read raw data
+    user_ratings = read_ratings("ratings.csv", data_dir=raw_dir)
+    movies = read_movies("movies.csv", data_dir=raw_dir)
 
-    # read user_ratings and movies tables
-    user_ratings = read_ratings("ratings.csv")
-    movies = read_movies("movies.csv")
-    user_matrix = create_user_matrix(user_ratings, movies)
+    # Process data
+    user_matrix: pd.DataFrame = create_user_matrix(user_ratings, movies)
     movies = movies.drop("title", axis=1)
-    movies.to_csv("data/processed/movie_matrix.csv", index=False)
-    user_matrix.to_csv("data/processed/user_matrix.csv")
+
+    # Save data in a DataFrames
+    preprocess_dir = os.path.join(dataset_dir, "processed")
+    os.makedirs(preprocess_dir, exist_ok=True)
+    movies.to_csv(os.path.join(preprocess_dir, "movie_matrix.csv"), index=False)
+    user_matrix.to_csv(os.path.join(preprocess_dir, "user_matrix.csv"))
