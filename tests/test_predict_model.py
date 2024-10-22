@@ -58,3 +58,65 @@ def test_make_predictions():
             # On nettoie meme le dossier si il n'existait pas
             if not os.listdir(predictions_dir):
                 os.rmdir(predictions_dir)
+
+def test_make_predictions_multiple_users():
+    # Define the test log file
+    test_log_file = "test_predictions_log.csv"
+
+    try:
+        # Generate predictions for multiple user IDs
+        user_ids = [1, 2, 3]
+        predictions_df = make_predictions(
+            user_ids=user_ids,
+            model_name="KNN_Recommendation_Model",
+            user_matrix_filename="data/processed/user_matrix.csv",
+            movie_matrix_filename="data/processed/movie_matrix.csv",
+            n_recommendations=3,
+            log_file=test_log_file
+        )
+
+        # Check that the DataFrame contains predictions for all user IDs
+        assert not predictions_df.empty, "The predictions DataFrame is empty."
+        assert set(predictions_df['userId']) == set(user_ids), (
+            "The predictions DataFrame does not contain all user IDs."
+        )
+
+    finally:
+        # Clean up test artifacts
+        predictions_dir = 'predictions'
+        test_log_path = os.path.join(predictions_dir, test_log_file)
+        if os.path.exists(test_log_path):
+            os.remove(test_log_path)
+            if not os.listdir(predictions_dir):
+                os.rmdir(predictions_dir)
+
+
+def test_make_predictions_invalid_user_ids():
+    # Define the test log file
+    test_log_file = "test_predictions_log.csv"
+
+    try:
+        # Use a non-existent user ID
+        user_ids = [-1]
+        predictions_df = make_predictions(
+            user_ids=user_ids,
+            model_name="KNN_Recommendation_Model",
+            user_matrix_filename="data/processed/user_matrix.csv",
+            movie_matrix_filename="data/processed/movie_matrix.csv",
+            n_recommendations=3,
+            log_file=test_log_file
+        )
+
+        # Check that the DataFrame is empty or handles the invalid user ID appropriately
+        assert predictions_df.empty or len(predictions_df) == 0, (
+            "The predictions DataFrame should be empty for invalid user IDs."
+        )
+
+    finally:
+        # Clean up test artifacts
+        predictions_dir = 'predictions'
+        test_log_path = os.path.join(predictions_dir, test_log_file)
+        if os.path.exists(test_log_path):
+            os.remove(test_log_path)
+            if not os.listdir(predictions_dir):
+                os.rmdir(predictions_dir)
