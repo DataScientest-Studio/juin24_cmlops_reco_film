@@ -1,39 +1,88 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
+name: CI_reco_film
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
+
+      - name: Build and start services with Docker Compose
+        run: |
+          docker-compose up -d
+
+      - name: Wait for MLflow server to be ready
+        run: |
+          for i in {1..30}; do
+            if nc -z localhost 5000; then
+              echo "MLflow is up!"
+              break
+            fi
+            echo "Waiting for MLflow..."
+            sleep 1
+          done
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version
+
+      - name: Install dependencies with Poetry
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry install
+
+      - name: Retrieve raw data
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry run python src/data/import_raw_data.py
+
+      - name: Make dataset
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry run python src/data/make_dataset.py data/raw data/processed
+
+      - name: Build features
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry run python src/features/build_features.py
+
+      - name: Lint with Ruff
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry run ruff . --format text
+
+      - name: Run tests with pytest
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry run pytest
+
+      - name: Stop Docker Compose services
+        if: always()
+        run: |
+          docker-compose down
