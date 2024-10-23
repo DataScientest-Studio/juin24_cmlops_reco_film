@@ -16,4 +16,4 @@ jobs:
           pip install poetry
           poetry install
       - name: Run unittest
-        run: poetry run pytest -s juin24_cmlops_reco_film/tests/test_dummy.py
+        run: poetry run pytest -s tests/test_dummy.py
