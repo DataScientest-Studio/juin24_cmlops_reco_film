@@ -9,6 +9,11 @@ Here is the list of all our services:
 * `api` provides project API 
 * `dev` to develop the project using a docker container
 
+First build docker images:
+```
+docker-compose build
+```
+
 ### Run API
 * Run API:
 ```
@@ -79,9 +84,22 @@ uvicorn api:api --host 0.0.0.0 --port 8000 --reload
 
 ### Architecture
 TODO
+```mermaid
+architecture-beta
+    group api(cloud)[API Reco Film]
+
+    service db(database)[Database] in api
+    service disk1(disk)[Storage] in api
+    service server(server)[Server] in api
+
+    db:L -- R:server
+    disk1:T -- B:server
+
+```
 
 ### Useful
 * [project template](https://github.com/DataScientest-Studio/Template_MLOps_movie_recommandation)
 * [project board](https://github.com/users/Chrisdml/projects/1)
+* [slides](https://docs.google.com/presentation/d/10uYtuIhN6x5Lg5NAe9H6fFhHJA6Qcs5iDcperAnpq_k/edit?usp=sharing)
 
 ### Biblio
