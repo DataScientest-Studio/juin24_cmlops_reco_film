@@ -39,10 +39,9 @@ services:
       - ./models:/opt/workspace/models
       - ./data:/opt/workspace/data
       - ./src:/opt/workspace/src
+      - ./tests:/opt/workspace/tests
       - ./app.py:/opt/workspace/app.py
       - ./api.py:/opt/workspace/api.py
-      - ./test.py:/opt/workspace/test.py
-      - ./tests:/opt/workspace/tests
     network_mode: host
     ports:
       - "8000:8000"

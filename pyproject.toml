@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "reco film"
+name = "src"
 version = "0.1.0"
 description = "MLOps"
 authors = ["Team reco"]
