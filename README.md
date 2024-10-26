@@ -73,16 +73,23 @@ uvicorn api:api --host 0.0.0.0 --port 8000 --reload
 ## Technical documentation
 * [Cahier des charges](https://docs.google.com/document/d/11B940u5Z8is7Wlj7b0wzkA4UE-wqW9eDQh4Fcw8SisY/edit?usp=sharing)
 
-### Dev choices
+### 0. Dev choices
 
 * To develop we recommend to use VSCode with extension [ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
 
 * We choose to use [poetry](https://python-poetry.org/) instead of `requirement.txt` because it *Python packaging and dependency management made easy*.
 
 
-### Architecture
+### 1. Architecture
 TODO
 
-### Useful
+### 2. Docker and Docker-compose
+TODO
+
+### 3. API
+API is implemented using [FastAPI](https://fastapi.tiangolo.com/). It contains a `dict` object to record user names and passwords. Passwords are encoded using [md5 algorithm](https://www.geeksforgeeks.org/md5-hash-python/).
+
+
+## Useful
 * [project template](https://github.com/DataScientest-Studio/Template_MLOps_movie_recommandation)
 * [project board](https://github.com/users/Chrisdml/projects/1)
