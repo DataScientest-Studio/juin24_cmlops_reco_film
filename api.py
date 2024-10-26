@@ -78,7 +78,6 @@ def manage_authentication(credentials) -> tuple:
     if (USER_DB.get(credentials.username) is None) or (
         USER_DB.get(credentials.username)[1] != hash_password
     ):
-        print(hash_password)
         raise BadCredentialException(
             name="bad_creds",
             message="username ou mot de passe incorrect.",
