@@ -40,6 +40,13 @@ class RecoApp:
         predictions = make_predictions(users, model_path, USER_MATRIX_PATH)
         logger.info(f"Predictions: {predictions}")
 
+    def test(self):
+        print("Hello")
+        import hashlib
+
+        result = hashlib.md5("x".encode())
+        print(result.hexdigest())
+
 
 if __name__ == "__main__":
     fire.Fire(RecoApp)

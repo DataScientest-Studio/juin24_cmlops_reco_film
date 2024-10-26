@@ -10,6 +10,9 @@ Here is the list of all our services:
 * `dev` to develop the project using a docker container
 
 ### Run API
+
+**NB:** You can run API with the credentials: `username`: 'alice', `password`: 'x'.
+
 * Run API:
 ```
 docker compose up api
@@ -83,5 +86,3 @@ TODO
 ### Useful
 * [project template](https://github.com/DataScientest-Studio/Template_MLOps_movie_recommandation)
 * [project board](https://github.com/users/Chrisdml/projects/1)
-
-### Biblio
