@@ -1,6 +1,5 @@
 import hashlib
-from typing import Optional, Literal, Annotated
-from pydantic import BaseModel
+from typing import Annotated
 
 
 from fastapi import FastAPI, Request, Depends
