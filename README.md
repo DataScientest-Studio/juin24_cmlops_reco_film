@@ -9,6 +9,11 @@ Here is the list of all our services:
 * `api` provides project API 
 * `dev` to develop the project using a docker container
 
+First build docker images:
+```
+docker-compose build
+```
+
 ### Run API
 
 **NB:** You can run API with the credentials: `username`: 'alice', `password`: 'x'.
@@ -82,6 +87,18 @@ uvicorn api:api --host 0.0.0.0 --port 8000 --reload
 
 ### 1. Architecture
 TODO
+```mermaid
+architecture-beta
+    group api(cloud)[API Reco Film]
+
+    service db(database)[Database] in api
+    service disk1(disk)[Storage] in api
+    service server(server)[Server] in api
+
+    db:L -- R:server
+    disk1:T -- B:server
+
+```
 
 ### 2. Docker and Docker-compose
 TODO
