@@ -55,6 +55,10 @@ def make_predictions(
     # Load user features
     user_matrix = pd.read_csv(user_matrix_filename)
     users = user_matrix[user_matrix["userId"].isin(user_ids)]
+    if users.empty:
+        # No users found; return an empty DataFrame
+        return pd.DataFrame()
+
     users_features = users.drop("userId", axis=1).values
     user_ids_array = users["userId"].values
 
