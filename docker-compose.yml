@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   api:
     image: project/mlops_project/api:0.0
@@ -10,7 +12,7 @@ services:
       - LOG__LEVEL=debug
     networks:
       reco_network:
-        ipv4_address: 172.19.0.5
+        ipv4_address: 192.168.100.5
     ports:
       - "8000:8000"
 
@@ -19,11 +21,12 @@ services:
     depends_on:
       - api
     environment:
-      - IPV4_API=172.19.0.5
+      - IPV4_API=192.168.100.5
     networks:
-      - reco_network
+      reco_network:
+        ipv4_address: 192.168.100.10
     ports:
-      - "8000:8000"
+      - "8001:8000"
 
   dev:
     image: project/mlops_project/dev:0.0
@@ -42,24 +45,41 @@ services:
       - ./tests:/opt/workspace/tests
       - ./app.py:/opt/workspace/app.py
       - ./api.py:/opt/workspace/api.py
-    network_mode: host
+    networks:
+      reco_network:
+        ipv4_address: 192.168.100.9
     ports:
-      - "8000:8000"
+      - "8002:8000"
     command: bash
 
   mlflow-server:
-    image: mlflow/mlflow:latest
+    image: ghcr.io/mlflow/mlflow:v2.17.2
     container_name: mlflow_server
     environment:
       - MLFLOW_TRACKING_URI=http://0.0.0.0:5000
     volumes:
       - ./mlflow:/mlflow
+      - ./mlruns:/mlruns
     networks:
       reco_network:
-        ipv4_address: 172.19.0.6
+        ipv4_address: 192.168.100.6
     ports:
       - "5000:5000"
     command: mlflow server --host 0.0.0.0 --port 5000
+
+  csv_exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: csv_exporter  
+    container_name: csv_exporter
+    volumes:
+      - ./predictions/predictions_log.csv:/data/predictions_log.csv:ro
+    networks:
+      reco_network:
+        ipv4_address: 192.168.100.12
+    ports:
+      - "9101:8080"
 
   prometheus:
     image: prom/prometheus:latest
@@ -68,7 +88,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       reco_network:
-        ipv4_address: 172.19.0.7
+        ipv4_address: 192.168.100.7
     ports:
       - "9090:9090"
 
@@ -76,14 +96,18 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     environment:
+      - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      reco_network:
-        ipv4_address: 172.19.0.8
-    ports:
-      - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ./grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+    networks:
+      reco_network:
+        ipv4_address: 192.168.100.8
+    ports:
+      - "3001:3000"
+
 
 volumes:
   grafana-storage:
