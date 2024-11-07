@@ -45,3 +45,14 @@ FROM base as dev
 RUN poetry install
 RUN poetry add fastapi httptools uvloop uvicorn
 
+
+####################################################################
+# python exporter for prometheus image
+####################################################################
+# Stage for CSV Exporter
+FROM base AS csv_exporter
+
+COPY csv_exporter.py ./csv_exporter.py
+RUN pip install prometheus_client
+
+CMD ["python", "csv_exporter.py"]

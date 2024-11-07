@@ -1,0 +1,74 @@
+{
+  "id": null,
+  "uid": "example-dashboard",
+  "title": "Prediction Error Metrics",
+  "tags": ["example"],
+  "timezone": "browser",
+  "schemaVersion": 16,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Average of Last Two Prediction Error Metrics",
+      "targets": [
+        {
+          "expr": "avg_over_time(prediction_error_metric[30s])",
+          "legendFormat": "",
+          "refId": "A",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legend": {
+            "show": false
+          }
+        }
+      ],
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Error Metric",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "type": "graph",
+      "legend": {
+        "show": false
+      },
+      "lines": true,
+      "fill": 1,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "aliasColors": {}
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": ["5s", "10s", "30s", "1m"]
+  }
+}
