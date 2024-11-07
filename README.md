@@ -104,22 +104,52 @@ GitHub Actions is used for automating workflows, including running tests and dep
 
 
 ### 1. Architecture
-TODO
+
+The architecture of the Reco Film project is designed to efficiently handle movie recommendations through a microservices approach. Below is a detailed architecture diagram:
+
 ```mermaid
-architecture-beta
-    group api(cloud)[API Reco Film]
-
-    service db(database)[Database] in api
-    service disk1(disk)[Storage] in api
-    service server(server)[Server] in api
-
-    db:L -- R:server
-    disk1:T -- B:server
-
+graph TD;
+    A[User] -->|Requests| B[API Gateway];
+    B --> C[Reco Film API];
+    C --> D[Database];
+    C --> E[Model Storage];
+    C --> F[MLflow Tracking];
+    D -->|Data| C;
+    E -->|Models| C;
+    F -->|Experiment Data| C;
 ```
 
+- **API Gateway**: Manages incoming requests and routes them to the appropriate services.
+- **Reco Film API**: The core service that handles movie recommendation logic.
+- **Database**: Stores user data, movie data, and other necessary information.
+- **Model Storage**: Contains machine learning models used for generating recommendations.
+- **MLflow Tracking**: Manages the lifecycle of machine learning experiments.
+
 ### 2. Docker and Docker-compose
-TODO
+
+The project uses Docker and Docker Compose to manage and run services in isolated environments. The `docker-compose.yml` file defines the following services:
+
+- **api**: This service runs the FastAPI application, which serves the movie recommendation API.
+- **dev**: A development environment that includes all necessary dependencies and tools for building and testing the application.
+
+To build and run the services, use the following commands:
+
+- Build the Docker images:
+  ```
+  docker-compose build
+  ```
+
+- Run the API service:
+  ```
+  docker-compose up api
+  ```
+
+- Run the development environment:
+  ```
+  docker-compose run --rm dev
+  ```
+
+These services ensure that the application is scalable, maintainable, and easy to deploy.
 
 ### 3. API
 [API](api.py) is implemented using [FastAPI](https://fastapi.tiangolo.com/). It contains a `dict` object to record user names and passwords. Passwords are encoded using [md5 algorithm](https://www.geeksforgeeks.org/md5-hash-python/).
