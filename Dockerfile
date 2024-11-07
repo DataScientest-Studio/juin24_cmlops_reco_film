@@ -26,14 +26,14 @@ FROM base as api
 # Set the working directory in the container
 WORKDIR /opt/workspace
 
-# Intall python packages
+# Install python packages for development
 RUN poetry install
 RUN poetry add fastapi httptools uvloop uvicorn
 
-# Expose port 8000
+# Expose port 8000 for the API service
 EXPOSE 8000
 
-# Run FastAPI app
+# Run FastAPI app with Uvicorn
 CMD ["uvicorn", "app:api", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 ####################################################################
