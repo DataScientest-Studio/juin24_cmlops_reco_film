@@ -75,7 +75,25 @@ uvicorn api:api --host 0.0.0.0 --port 8000 --reload
 * See doc here:[http://localhost:8000/docs](http://localhost:8000/docs)
 
 
-## Technical documentation
+## CI/CD and Testing
+
+This project uses several tools to ensure quality and continuous integration:
+
+### MLflow
+
+MLflow is used for tracking experiments, packaging code into reproducible runs, and sharing and deploying models. It helps in managing the machine learning lifecycle, including experimentation, reproducibility, and deployment.
+
+### Pytest
+
+Pytest is used for writing and running tests. It is a mature testing framework that supports simple unit tests as well as complex functional testing. To run the tests, use the following command:
+
+```
+poetry run pytest -s
+```
+
+### GitHub Actions
+
+GitHub Actions is used for automating workflows, including running tests and deploying the application. It helps in setting up a CI/CD pipeline to ensure that the code is always in a deployable state.
 * [Cahier des charges](https://docs.google.com/document/d/11B940u5Z8is7Wlj7b0wzkA4UE-wqW9eDQh4Fcw8SisY/edit?usp=sharing)
 
 ### 0. Dev choices
