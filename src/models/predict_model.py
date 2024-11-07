@@ -1,15 +1,24 @@
-import pandas as pd
-import numpy as np
-import mlflow
-from mlflow.tracking import MlflowClient
-from threading import Lock
-from datetime import datetime
 import os
+from datetime import datetime
+from threading import Lock
+
+import mlflow
+import numpy as np
+import pandas as pd
+from mlflow.tracking import MlflowClient
 
 # Create a lock for thread-safe file operations
 file_lock = Lock()
 
-def make_predictions(user_ids, model_name, user_matrix_filename, movie_matrix_filename, n_recommendations=3, log_file="predictions_log.csv"):
+
+def make_predictions(
+    user_ids,
+    model_name,
+    user_matrix_filename,
+    movie_matrix_filename,
+    n_recommendations=3,
+    log_file="predictions_log.csv",
+):
     """
     Generate movie recommendations for a list of user IDs, compute error metrics, and log predictions to a centralized file
     within the 'predictions' folder.
@@ -55,11 +64,11 @@ def make_predictions(user_ids, model_name, user_matrix_filename, movie_matrix_fi
 
     # Load movie features
     movie_matrix = pd.read_csv(movie_matrix_filename)
-    movie_ids = movie_matrix['movieId'].values
-    movie_features = movie_matrix.drop('movieId', axis=1).values
+    movie_ids = movie_matrix["movieId"].values
+    movie_features = movie_matrix.drop("movieId", axis=1).values
 
     # Compute nearest movies for each user
-    _ , indices = model.kneighbors(users_features, n_neighbors=n_recommendations)
+    _, indices = model.kneighbors(users_features, n_neighbors=n_recommendations)
 
     # Map indices to movie IDs and compute error metrics
     recommendations_list = []
@@ -70,25 +79,29 @@ def make_predictions(user_ids, model_name, user_matrix_filename, movie_matrix_fi
         # Get features of recommended movies
         recommended_movie_features = movie_features[idx_list]
         # Compute distances between user feature and recommended movie features
-        distances_to_user = np.linalg.norm(recommended_movie_features - user_feature, axis=1)
+        distances_to_user = np.linalg.norm(
+            recommended_movie_features - user_feature, axis=1
+        )
         # Compute mean distance as error metric
         error_metric = distances_to_user.mean()
         # Store recommendations and error metric
-        recommendations_list.append({
-            'userId': user_id,
-            'recommendations': recommended_movie_ids,
-            'error_metric': error_metric,
-            'model_name': model_name,
-            'model_version': model_version,
-            'model_run_id': model_run_id,
-            'timestamp': timestamp
-        })
+        recommendations_list.append(
+            {
+                "userId": user_id,
+                "recommendations": recommended_movie_ids,
+                "error_metric": error_metric,
+                "model_name": model_name,
+                "model_version": model_version,
+                "model_run_id": model_run_id,
+                "timestamp": timestamp,
+            }
+        )
 
     # Convert to DataFrame
     recommendations_df = pd.DataFrame(recommendations_list)
 
     # Prepare the 'predictions' directory
-    predictions_dir = 'predictions'
+    predictions_dir = "predictions"
     if not os.path.exists(predictions_dir):
         os.makedirs(predictions_dir)
 
@@ -97,12 +110,15 @@ def make_predictions(user_ids, model_name, user_matrix_filename, movie_matrix_fi
     with file_lock:
         if os.path.exists(log_file_path):
             # Append without writing the header
-            recommendations_df.to_csv(log_file_path, mode='a', header=False, index=False)
+            recommendations_df.to_csv(
+                log_file_path, mode="a", header=False, index=False
+            )
         else:
             # Write with the header
-            recommendations_df.to_csv(log_file_path, mode='w', header=True, index=False)
+            recommendations_df.to_csv(log_file_path, mode="w", header=True, index=False)
 
     return recommendations_df
+
 
 if __name__ == "__main__":
     # List of user IDs to generate recommendations for
@@ -115,7 +131,7 @@ if __name__ == "__main__":
         user_matrix_filename="data/processed/user_matrix.csv",
         movie_matrix_filename="data/processed/movie_matrix.csv",
         n_recommendations=3,
-        log_file="predictions_log.csv"
+        log_file="predictions_log.csv",
     )
 
     print(recommendations)
