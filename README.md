@@ -23,11 +23,11 @@ docker-compose build
 docker compose up api
 ```
 
-When the API is running, the API documentation is provided here: [http://172.19.0.5:8000/docs](http://172.19.0.5:8000/docs).
+When the API is running, the API documentation is provided here: [http://localhost:8080/docs](http://localhost:8080/docs).
 
 * Test API:
 ```
-curl -X GET -i http://172.19.0.5:8000/
+curl -X GET -i http://localhost:8080/
 ```
 
 * Infer using model into API:
@@ -42,7 +42,23 @@ curl -X 'GET' \
 docker container stop reco_api
 ```
 
-### Dev mode
+## Monitoring
+
+This project includes monitoring using CSV Exporter, Prometheus, and Grafana.
+
+* Start monitoring services:
+```
+docker compose up monitoring
+```
+
+* Access Grafana Dashboard:
+    * `http://localhost:3000/`
+    * Default credentials: `admin` / `admin`
+
+* Prometheus is available at:
+    * `http://localhost:9090/`
+
+* CSV Exporter is configured to export metrics to Prometheus.
 
 * Run the dev container:
 ```
