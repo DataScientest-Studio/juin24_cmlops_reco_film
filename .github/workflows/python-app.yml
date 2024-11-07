@@ -1,0 +1,129 @@
+name: CI_reco_film
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      mlflow_ready: ${{ steps.mlflow_status.outputs.mlflow_ready }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
+
+      - name: Build and start services with Docker Compose
+        run: |
+          docker-compose up -d
+
+      - name: Wait for MLflow server to be ready
+        id: mlflow_status
+        run: |
+          for i in {1..30}; do
+            if nc -z localhost 5000; then
+              echo "MLflow is up!"
+              echo "::set-output name=mlflow_ready::true"
+              break
+            fi
+            echo "Waiting for MLflow..."
+            sleep 1
+          done
+
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
+
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
+
+  data_preparation:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies (cached)
+        run: |
+          poetry install
+
+      - name: Retrieve raw data
+        run: |
+          poetry run python src/data/import_raw_data.py
+
+      - name: Make dataset
+        run: |
+          poetry run python src/data/make_dataset.py data/raw data/processed
+
+      - name: Build features
+        run: |
+          poetry run python src/features/build_features.py
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: data_preparation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies (cached)
+        run: |
+          poetry install
+
+      - name: Lint with Ruff
+        run: |
+          poetry run ruff . --format text
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    env:
+      MLFLOW_TRACKING_URI: http://localhost:5000
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies (cached)
+        run: |
+          poetry install
+
+      - name: Run tests with pytest
+        run: |
+          poetry run pytest
+
+  teardown:
+    runs-on: ubuntu-latest
+    needs: [test, lint, data_preparation, build, setup]
+    if: always()
+    steps:
+      - name: Stop Docker Compose services
+        run: |
+          docker-compose down
