@@ -129,8 +129,12 @@ graph TD;
 
 The project uses Docker and Docker Compose to manage and run services in isolated environments. The `docker-compose.yml` file defines the following services:
 
-- **api**: This service runs the FastAPI application, which serves the movie recommendation API.
-- **dev**: A development environment that includes all necessary dependencies and tools for building and testing the application.
+- **api**: This service runs the FastAPI application, which serves the movie recommendation API. It is built from the `Dockerfile` and exposes port 8000 for API access.
+- **test_api**: A service used for testing the API, ensuring it is functioning correctly. It depends on the `api` service and uses the same network.
+- **dev**: A development environment that includes all necessary dependencies and tools for building and testing the application. It mounts local directories for live development and uses the host network mode.
+- **mlflow-server**: This service runs the MLflow server for tracking experiments and managing the machine learning lifecycle. It exposes port 5000 for accessing the MLflow UI.
+
+The services are connected through a custom Docker network named `reco_network`, which allows them to communicate with each other using predefined IP addresses.
 
 To build and run the services, use the following commands:
 
@@ -147,6 +151,11 @@ To build and run the services, use the following commands:
 - Run the development environment:
   ```
   docker-compose run --rm dev
+  ```
+
+- Run the MLflow server:
+  ```
+  docker-compose up mlflow-server
   ```
 
 These services ensure that the application is scalable, maintainable, and easy to deploy.
