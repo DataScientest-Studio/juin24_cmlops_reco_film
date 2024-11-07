@@ -114,6 +114,7 @@ graph TD;
     C --> D[Database];
     C --> E[Model Storage];
     C --> F[MLflow Tracking];
+    F --> G[Monitoring];
     D -->|Data| C;
     E -->|Models| C;
     F -->|Experiment Data| C;
