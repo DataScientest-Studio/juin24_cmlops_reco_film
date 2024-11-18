@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/0/dc6e506b8d994b9a9ab1a036aa39218e/artifacts
+deleted_time: 1729607215028
+end_time: 1729607215024
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: dc6e506b8d994b9a9ab1a036aa39218e
+run_name: popular-hare-690
+run_uuid: dc6e506b8d994b9a9ab1a036aa39218e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729607215008
+status: 3
+tags: []
+user_id: jonathan

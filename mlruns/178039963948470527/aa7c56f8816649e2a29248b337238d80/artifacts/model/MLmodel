@@ -1,0 +1,12 @@
+artifact_path: model
+flavors:
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.2
+mlflow_version: 2.17.0
+model_size_bytes: 4365274
+model_uuid: f1ad2c5140a641d3898c50fe32f94816
+run_id: aa7c56f8816649e2a29248b337238d80
+utc_time_created: '2024-11-18 21:41:38.446877'

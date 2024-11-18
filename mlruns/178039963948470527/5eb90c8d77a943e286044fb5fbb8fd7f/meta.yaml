@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/178039963948470527/5eb90c8d77a943e286044fb5fbb8fd7f/artifacts
+end_time: 1731969991803
+entry_point_name: ''
+experiment_id: '178039963948470527'
+lifecycle_stage: active
+run_id: 5eb90c8d77a943e286044fb5fbb8fd7f
+run_name: KNN_n5_metric_cosine
+run_uuid: 5eb90c8d77a943e286044fb5fbb8fd7f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731969958867
+status: 3
+tags: []
+user_id: root

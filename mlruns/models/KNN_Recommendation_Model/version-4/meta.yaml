@@ -1,8 +1,8 @@
 aliases: []
 creation_timestamp: 1729604383283
-current_stage: Production
+current_stage: Archived
 description: null
-last_updated_timestamp: 1729604383293
+last_updated_timestamp: 1731970212908
 name: KNN_Recommendation_Model
 run_id: ac5b41dea14e4f4e87113bca6e9d7866
 run_link: null
