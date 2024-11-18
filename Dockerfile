@@ -34,7 +34,7 @@ RUN poetry add fastapi httptools uvloop uvicorn
 EXPOSE 8000
 
 # Run FastAPI app with Uvicorn
-CMD ["uvicorn", "app:api", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "api:api", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 ####################################################################
 # Dev image
