@@ -7,6 +7,9 @@ import numpy as np
 import pandas as pd
 from mlflow.tracking import MlflowClient
 
+# Set MLflow tracking URI from environment variable, default to localhost
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
+
 # Create a lock for thread-safe file operations
 file_lock = Lock()
 
