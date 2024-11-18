@@ -109,7 +109,7 @@ from pydantic import BaseModel
 
 
 class RecommendationsResponse(BaseModel):
-    model_config = {'protected_namespaces': ()}
+    model_config = {"protected_namespaces": ()}
     user_name: str
     recommendations: List[str]
     error_metric: float
@@ -193,6 +193,7 @@ def get_recommend_user(
         ],
         model_name="KNN_Recommendation_Model",  # Name of the registered model in MLflow
         user_matrix_filename="data/processed/user_matrix.csv",
+        movie_matrix_filename="data/processed/movie_matrix.csv",
     )
     return {
         "user_name": username,
