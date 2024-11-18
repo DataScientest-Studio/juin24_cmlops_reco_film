@@ -37,11 +37,11 @@ api = FastAPI(
 security = HTTPBasic()
 
 # User DB
-# - username: (user_id, md5(mdp))
-USER_DB: dict[str, tuple[int, str]] = {
-    "alice": (1, "9dd4e461268c8034f5c8564e155c67a6"),
-    "bob": (2, "9dd4e461268c8034f5c8564e155c67a6"),
-    "admin": (0, "9dd4e461268c8034f5c8564e155c67a6"),
+# - username: (user_id, md5(mdp), role)
+USER_DB: dict[str, tuple[int, str, str]] = {
+    "alice": (1, "9dd4e461268c8034f5c8564e155c67a6", "user"),
+    "bob": (2, "9dd4e461268c8034f5c8564e155c67a6", "user"),
+    "admin": (0, "9dd4e461268c8034f5c8564e155c67a6", "admin"),
 }
 
 
@@ -97,7 +97,7 @@ def manage_authentication(credentials) -> tuple:
             message="Incorrect username or password.",
             date=str(datetime.datetime.now()),
         )
-    user_id, role = user_record
+    user_id, _, role = user_record
     return user_id, credentials.username, role
 
 
