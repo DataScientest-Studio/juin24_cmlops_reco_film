@@ -1,3 +1,4 @@
+import os
 import mlflow
 import numpy as np
 import pandas as pd
@@ -5,8 +6,8 @@ from mlflow import MlflowClient
 from sklearn.model_selection import ParameterGrid, train_test_split
 from sklearn.neighbors import NearestNeighbors
 
-# Set MLflow tracking URI to the service name in Docker
-mlflow.set_tracking_uri("http://mlflow-server:5000")
+# Set MLflow tracking URI from environment variable, default to localhost
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
 
 
 def train_and_register_model():
