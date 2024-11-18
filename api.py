@@ -5,7 +5,11 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import mlflow
 from src.models.predict_model import make_predictions
+
+# Set MLflow tracking URI to the service name in Docker
+mlflow.set_tracking_uri("http://mlflow-server:5000")
 from src.models.train_model import train_and_register_model
 
 # API
