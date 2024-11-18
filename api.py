@@ -83,9 +83,8 @@ def manage_authentication(credentials) -> tuple:
     hash_password = hashlib.md5(str_clean.encode()).hexdigest()
 
     # Retrieve user in DB and compare API hash to user hash password in DB
-    if (USER_DB.get(credentials.username) is None) or (
-        USER_DB.get(credentials.username)[1] != hash_password
-    ):
+    user_record = USER_DB.get(credentials.username)
+    if (user_record is None) or (user_record[1] != hash_password):
         raise BadCredentialException(
             name="bad_creds",
             message="username ou mot de passe incorrect.",
