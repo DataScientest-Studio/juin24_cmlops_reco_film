@@ -97,7 +97,7 @@ def manage_authentication(credentials) -> tuple:
             message="Incorrect username or password.",
             date=str(datetime.datetime.now()),
         )
-    user_id, _, role = user_record
+    user_id, role = user_record
     return user_id, credentials.username, role
 
 
