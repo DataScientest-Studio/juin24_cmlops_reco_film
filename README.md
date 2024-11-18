@@ -125,15 +125,58 @@ The architecture of the Reco Film project is designed to efficiently handle movi
 
 ```mermaid
 graph TD;
-    A[User] -->|Requests| B[API Gateway];
+    %% User Authentication Flow
+    A[User] -->|Credentials| X[Authentication Service];
+    X -->|Authentication Token| B[API Gateway];
+    
+    %% API Requests
     B --> C[Reco Film API];
-    C --> D[Database];
+
+    %% API Interactions
+    C --> D[(Database)];
     C --> E[Model Storage];
-    C --> F[MLflow Tracking];
-    F --> G[Monitoring];
-    D -->|Data| C;
-    E -->|Models| C;
-    F -->|Experiment Data| C;
+    C --> G[MLflow Tracking];
+    C --> N[CSV Exporter];
+    C -->|Exposes Metrics| J[Prometheus];
+
+    %% MLflow Components
+    G --> H[MLflow Model Registry];
+    E --> H;
+    S[Model Training Pipeline] --> G;
+    G -->|Registers Models| H;
+
+    %% Monitoring Components
+    N -->|Exports Metrics| J;
+    J --> K[Grafana];
+
+    %% CI/CD Pipeline
+    L[GitHub Actions CI/CD] -->|Deploys| C;
+
+    %% Data Processing
+    I[Raw Data Storage] --> F[Data Processing Scripts];
+    F --> D;
+
+    %% Groupings
+    subgraph Monitoring
+        J
+        K
+        N
+    end
+
+    subgraph MLflow
+        G
+        H
+    end
+
+    subgraph CI/CD
+        L
+    end
+
+    subgraph Data Processing
+        I
+        F
+        D
+    end
 ```
 
 - **API Gateway**: Manages incoming requests and routes them to the appropriate services.
