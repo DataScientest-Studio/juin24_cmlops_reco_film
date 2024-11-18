@@ -197,9 +197,9 @@ def get_recommend_user(
     )
     return {
         "user_name": username,
-        "recommendations": predictions.loc[0, "recommendations"],
+        "recommendations": [str(rec) for rec in predictions.loc[0, "recommendations"]],
         "error_metric": predictions.loc[0, "error_metric"],
         "model_name": predictions.loc[0, "model_name"],
-        "model_version": predictions.loc[0, "model_version"],
+        "model_version": str(predictions.loc[0, "model_version"]),
         "timestamp": str(predictions.loc[0, "timestamp"]),
     }
