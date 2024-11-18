@@ -191,7 +191,7 @@ def get_recommend_user(
         user_ids=[
             user_id,
         ],
-        model_name="Your_Actual_Model_Name",  # Update with the correct model name
+        model_name="KNN_Recommendation_Model",  # Update with the correct model name
         user_matrix_filename="data/processed/user_matrix.csv",
         movie_matrix_filename="data/processed/movie_matrix.csv",
     )
