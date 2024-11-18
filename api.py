@@ -109,6 +109,7 @@ from pydantic import BaseModel
 
 
 class RecommendationsResponse(BaseModel):
+    model_config = {'protected_namespaces': ()}
     user_name: str
     recommendations: List[str]
     error_metric: float
