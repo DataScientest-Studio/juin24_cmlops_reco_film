@@ -24,15 +24,23 @@ docker container rm reco_api
 ```
 
 ## Technical documentation
-Our API call are implemented in file []() using the python framework FastAPI.
+Our API calls are implemented using the Python framework FastAPI. The implementation can be found in the `api.py` file.
 
 ### Security
+
+The API uses token-based authentication to secure endpoints. Users must provide valid credentials to obtain an authentication token, which is then used to access protected resources.
 
 ## CI/CD and Testing
 
 This project uses several tools to ensure quality and continuous integration:
 
+### CI/CD and Testing
+
+This project uses several tools to ensure quality and continuous integration:
+
 ### MLflow
+
+MLflow is used for tracking experiments, packaging code into reproducible runs, and sharing and deploying models. It helps in managing the machine learning lifecycle, including experimentation, reproducibility, and deployment.
 
 MLflow is used for tracking experiments, packaging code into reproducible runs, and sharing and deploying models. It helps in managing the machine learning lifecycle, including experimentation, reproducibility, and deployment.
 
