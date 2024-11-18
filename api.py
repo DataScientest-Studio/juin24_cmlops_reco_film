@@ -69,6 +69,7 @@ def QCMExceptionHandler(request: Request, exception: BadCredentialException):
     **Returns:**
     - JSON response with error details and a 418 status code.
     """
+    return JSONResponse(
         status_code=418,
         content={
             "url": str(request.url),
@@ -76,9 +77,6 @@ def QCMExceptionHandler(request: Request, exception: BadCredentialException):
             "message": exception.message,
             "date": exception.date,
         },
-        movie_matrix_filename="data/processed/movie_matrix.csv",
-        n_recommendations=3,
-        log_file="predictions_log.csv",
     )
 
 
@@ -114,7 +112,6 @@ def manage_authentication(credentials) -> tuple:
 
 # Routes
 # - Hello
-@api.get("/hello", name="Hello", tags=["test"])
 from pydantic import BaseModel
 from typing import List
 
@@ -127,7 +124,8 @@ class RecommendationsResponse(BaseModel):
     timestamp: str
 
 @api.get("/hello", name="Hello", tags=["test"])
-    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+def hello_route(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
 ) -> dict:
     """
     Greet the authenticated user.
