@@ -143,7 +143,16 @@ class RecommendationsResponse(BaseModel):
 def train_model_route(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
 ) -> dict:
-    """Endpoint to initiate model training. Accessible only to admin users."""
+    """
+    Initiate model training.
+
+    **Access:** Admin users only.
+
+    **Returns:**
+    - `message` (str): Confirmation that model training has started.
+    - `user_name` (str): The username of the admin initiating the training.
+    - `timestamp` (str): The time when training was initiated.
+    """
     user_id, username, role = manage_authentication(credentials=credentials)
     if role != "admin":
         raise HTTPException(
