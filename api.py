@@ -133,6 +133,7 @@ def hello_route(
     **Returns:**
     - `message` (str): A greeting message with the user's name.
     """
+    user_id, username, role = manage_authentication(credentials=credentials)
     return {"message": f"Hello {username}!"}
 
 
