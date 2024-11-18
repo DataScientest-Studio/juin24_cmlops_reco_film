@@ -53,6 +53,9 @@ def QCMExceptionHandler(request: Request, exception: BadCredentialException):
             "message": exception.message,
             "date": exception.date,
         },
+        movie_matrix_filename="data/processed/movie_matrix.csv",
+        n_recommendations=3,
+        log_file="predictions_log.csv",
     )
 
 
@@ -107,13 +110,17 @@ def get_recommend_user(
     """
     user_id, username = manage_authentication(credentials=credentials)
     predictions = make_predictions(
-        users_ids=[
+        user_ids=[
             user_id,
         ],
-        model_filename="models/model.pkl",  # Best model version
+        model_name="KNN_Recommendation_Model",  # Name of the registered model in MLflow
         user_matrix_filename="data/processed/user_matrix.csv",
     )
     return {
-        "recommend": predictions.tolist(),
         "user_name": username,
+        "recommendations": predictions.loc[0, 'recommendations'],
+        "error_metric": predictions.loc[0, 'error_metric'],
+        "model_name": predictions.loc[0, 'model_name'],
+        "model_version": predictions.loc[0, 'model_version'],
+        "timestamp": str(predictions.loc[0, 'timestamp']),
     }
