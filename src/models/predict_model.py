@@ -45,14 +45,17 @@ def make_predictions(
     if not latest_versions:
         raise ValueError(f"No production model found for {model_name}.")
 
-    # Assuming we're using the first model in the list
+    if not latest_versions:
+        raise ValueError(f"No production model found for {model_name}.")
+
+    # Use the first model version in the list
     model_version_info = latest_versions[0]
     model_version = model_version_info.version
     model_stage = model_version_info.current_stage
     model_run_id = model_version_info.run_id
 
     # Load the model from MLflow Model Registry
-    model_uri = f"models:/{model_name}/{model_stage}"
+    model_uri = f"models:/{model_name}/{model_version}"
     model = mlflow.sklearn.load_model(model_uri)
 
     # Load user features
