@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/0/57eb2104db9f406999fcfaafda72c80f/artifacts
+deleted_time: 1729607652866
+end_time: 1729607652864
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 57eb2104db9f406999fcfaafda72c80f
+run_name: silent-wasp-125
+run_uuid: 57eb2104db9f406999fcfaafda72c80f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729607650143
+status: 3
+tags: []
+user_id: jonathan

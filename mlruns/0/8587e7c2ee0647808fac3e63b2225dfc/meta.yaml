@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/0/8587e7c2ee0647808fac3e63b2225dfc/artifacts
+deleted_time: 1729607435464
+end_time: 1729607435460
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 8587e7c2ee0647808fac3e63b2225dfc
+run_name: loud-yak-561
+run_uuid: 8587e7c2ee0647808fac3e63b2225dfc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729607435441
+status: 3
+tags: []
+user_id: jonathan

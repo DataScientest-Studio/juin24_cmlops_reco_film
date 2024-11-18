@@ -1,0 +1,15 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/178039963948470527/22ce4349482c4d36bd5bdaee33f2301f/artifacts
+end_time: 1731966133016
+entry_point_name: ''
+experiment_id: '178039963948470527'
+lifecycle_stage: active
+run_id: 22ce4349482c4d36bd5bdaee33f2301f
+run_name: KNN_n10_metric_euclidean
+run_uuid: 22ce4349482c4d36bd5bdaee33f2301f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731966100966
+status: 3
+tags: []
+user_id: jonathan

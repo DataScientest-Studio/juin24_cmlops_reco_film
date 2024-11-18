@@ -13,9 +13,6 @@ services:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     volumes:
       - ./data/processed:/opt/workspace/data/processed
-    environment:
-      - LOG__LEVEL=debug
-      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     networks:
       reco_network:
         ipv4_address: 192.168.100.5
@@ -114,6 +111,20 @@ services:
     ports:
       - "3001:3000"
 
+  heimdally:
+    image: linuxserver/heimdall
+    container_name: heimdally
+    environment:
+      - PUID=1000  # Update with your user ID
+      - PGID=1000  # Update with your group ID
+      - TZ=Etc/UTC # Set your timezone, e.g., Europe/Paris
+    volumes:
+      - ./heimdall/config:/config
+    networks:
+      reco_network:
+        ipv4_address: 192.168.100.3
+    ports:
+      - "10000:80"
 
 volumes:
   grafana-storage:

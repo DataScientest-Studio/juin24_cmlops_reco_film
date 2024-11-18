@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/0/20001adbb1c147ab869469014c5168dc/artifacts
+deleted_time: 1729607438087
+end_time: 1729607438085
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 20001adbb1c147ab869469014c5168dc
+run_name: mysterious-toad-586
+run_uuid: 20001adbb1c147ab869469014c5168dc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729607435469
+status: 3
+tags: []
+user_id: jonathan

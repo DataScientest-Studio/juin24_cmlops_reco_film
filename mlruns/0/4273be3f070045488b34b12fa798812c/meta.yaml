@@ -1,0 +1,16 @@
+artifact_uri: file:///home/jonathan/mlops/juin24_cmlops_reco_film/mlruns/0/4273be3f070045488b34b12fa798812c/artifacts
+deleted_time: 1729607650138
+end_time: 1729607650134
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 4273be3f070045488b34b12fa798812c
+run_name: sedate-chimp-990
+run_uuid: 4273be3f070045488b34b12fa798812c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729607650120
+status: 3
+tags: []
+user_id: jonathan
