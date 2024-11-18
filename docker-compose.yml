@@ -10,6 +10,8 @@ services:
       target: api
     environment:
       - LOG__LEVEL=debug
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     networks:
       reco_network:
         ipv4_address: 192.168.100.5
