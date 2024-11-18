@@ -20,14 +20,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install docker-compose -y
-
       - name: Build and start services with Docker Compose
         run: |
-          docker-compose up -d
+          docker compose up -d
 
       - name: Wait for MLflow server to be ready
         id: mlflow_status
@@ -58,6 +53,7 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
           poetry --version
 
       - name: Install dependencies with Poetry
@@ -71,7 +67,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies (cached)
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version
         run: |
           poetry install
 
@@ -94,7 +95,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies (cached)
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version
         run: |
           poetry install
 
@@ -111,7 +117,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies (cached)
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version
         run: |
           poetry install
 
@@ -126,4 +137,4 @@ jobs:
     steps:
       - name: Stop Docker Compose services
         run: |
-          docker-compose down
+          docker compose down
