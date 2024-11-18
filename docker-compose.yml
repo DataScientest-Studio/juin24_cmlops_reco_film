@@ -11,6 +11,11 @@ services:
     environment:
       - LOG__LEVEL=debug
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    volumes:
+      - ./data/processed:/opt/workspace/data/processed
+    environment:
+      - LOG__LEVEL=debug
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     networks:
       reco_network:
         ipv4_address: 192.168.100.5
