@@ -136,7 +136,7 @@ graph TD;
     C --> D[(Database)];
     C --> E[Model Storage];
     C --> G[MLflow Tracking];
-    C --> N[CSV Exporter];
+    C --> N[Prometheus CSV Exporter];
     C -->|Exposes Metrics| J[Prometheus];
 
     %% MLflow Components
@@ -144,6 +144,7 @@ graph TD;
     E --> H;
     S[Model Training Pipeline] --> G;
     G -->|Registers Models| H;
+    H -->|Provides Models| C;
 
     %% Monitoring Components
     N -->|Exports Metrics| J;
