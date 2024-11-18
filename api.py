@@ -1,27 +1,18 @@
+import datetime
 import hashlib
 from typing import Annotated
 
-
-from fastapi import FastAPI, Request, Depends, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import datetime
-
-
 from src.models.predict_model import make_predictions
 from src.models.train_model import train_and_register_model
-
 
 # API
 api = FastAPI(
     title="Film Recommender API",
     description="An API that provides personalized movie recommendations based on user preferences and viewing history.",
     version="0.1.0",
-    contact={
-        "name": "Your Name",
-        "url": "http://yourwebsite.com/contact",
-        "email": "your.email@example.com",
-    },
     license_info={
         "name": "MIT License",
         "url": "https://opensource.org/licenses/MIT",
@@ -50,7 +41,7 @@ security = HTTPBasic()
 USER_DB: dict[str, tuple[int, str]] = {
     "alice": (1, "9dd4e461268c8034f5c8564e155c67a6"),
     "bob": (2, "9dd4e461268c8034f5c8564e155c67a6"),
-    "admin": (0, "9dd4e461268c8034f5c8564e155c67a6", "admin"),
+    "admin": (0, "9dd4e461268c8034f5c8564e155c67a6"),
 }
 
 
@@ -112,8 +103,10 @@ def manage_authentication(credentials) -> tuple:
 
 # Routes
 # - Hello
-from pydantic import BaseModel
 from typing import List
+
+from pydantic import BaseModel
+
 
 class RecommendationsResponse(BaseModel):
     user_name: str
@@ -123,9 +116,10 @@ class RecommendationsResponse(BaseModel):
     model_version: str
     timestamp: str
 
+
 @api.get("/hello", name="Hello", tags=["test"])
 def hello_route(
-    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
 ) -> dict:
     """
     Greet the authenticated user.
@@ -167,13 +161,15 @@ def train_model_route(
         "user_name": username,
         "timestamp": str(datetime.datetime.now()),
     }
+
+
 @api.get("/recommend", name="Recommend a list of movies", tags=["inference"])
 @api.get(
     "/recommend",
     name="Recommend a list of movies",
     tags=["inference"],
     response_model=RecommendationsResponse,
-    response_description="A list of recommended movies and model details."
+    response_description="A list of recommended movies and model details.",
 )
 def get_recommend_user(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
@@ -199,9 +195,9 @@ def get_recommend_user(
     )
     return {
         "user_name": username,
-        "recommendations": predictions.loc[0, 'recommendations'],
-        "error_metric": predictions.loc[0, 'error_metric'],
-        "model_name": predictions.loc[0, 'model_name'],
-        "model_version": predictions.loc[0, 'model_version'],
-        "timestamp": str(predictions.loc[0, 'timestamp']),
+        "recommendations": predictions.loc[0, "recommendations"],
+        "error_metric": predictions.loc[0, "error_metric"],
+        "model_name": predictions.loc[0, "model_name"],
+        "model_version": predictions.loc[0, "model_version"],
+        "timestamp": str(predictions.loc[0, "timestamp"]),
     }
