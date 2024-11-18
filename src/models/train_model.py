@@ -5,9 +5,8 @@ from mlflow import MlflowClient
 from sklearn.model_selection import ParameterGrid, train_test_split
 from sklearn.neighbors import NearestNeighbors
 
-# The Mlflow need to be running on port 5000
-# mlflow server --host 0.0.0.0 --port 5000
-# according to the docker-compose
+# Set MLflow tracking URI to the service name in Docker
+mlflow.set_tracking_uri("http://mlflow-server:5000")
 
 
 def train_and_register_model():
