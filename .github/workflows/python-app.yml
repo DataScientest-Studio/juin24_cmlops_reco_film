@@ -57,8 +57,6 @@ jobs:
           poetry --version
 
       - name: Install dependencies with Poetry
-        run: |
-          poetry install
 
   data_preparation:
     runs-on: ubuntu-latest
@@ -73,8 +71,6 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           export PATH="$HOME/.local/bin:$PATH"
           poetry --version
-        run: |
-          poetry install
 
       - name: Retrieve raw data
         run: |
