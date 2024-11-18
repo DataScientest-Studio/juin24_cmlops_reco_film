@@ -2,13 +2,14 @@ import hashlib
 from typing import Annotated
 
 
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import datetime
 
 
 from src.models.predict_model import make_predictions
+from src.models.train_model import train_and_register_model
 
 
 # API
@@ -22,6 +23,10 @@ api = FastAPI(
             "description": "test API is running",
         },
         {"name": "inference", "description": "todo"},
+        {
+            "name": "training",
+            "description": "Endpoint for training the model (admin only).",
+        },
     ],
 )
 
@@ -33,6 +38,7 @@ security = HTTPBasic()
 USER_DB: dict[str, tuple[int, str]] = {
     "alice": (1, "9dd4e461268c8034f5c8564e155c67a6"),
     "bob": (2, "9dd4e461268c8034f5c8564e155c67a6"),
+    "admin": (0, "9dd4e461268c8034f5c8564e155c67a6", "admin"),
 }
 
 
@@ -85,7 +91,8 @@ def manage_authentication(credentials) -> tuple:
             message="username ou mot de passe incorrect.",
             date=str(datetime.datetime.now()),
         )
-    return USER_DB.get(credentials.username)[0], credentials.username
+    user_id, _, role = user_record
+    return user_id, credentials.username, role
 
 
 # Routes
@@ -98,7 +105,27 @@ def get_hello_secure(
     return {"message": f"Hello {username}!"}
 
 
-# - User recommendation
+# - Train model
+@api.post("/train", name="Train the model", tags=["training"])
+def train_model_route(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+) -> dict:
+    """Endpoint to initiate model training. Accessible only to admin users."""
+    user_id, username, role = manage_authentication(credentials=credentials)
+    if role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="You are not authorized to perform this action.",
+        )
+
+    # Start model training
+    train_and_register_model()
+
+    return {
+        "message": "Model training initiated successfully.",
+        "user_name": username,
+        "timestamp": str(datetime.datetime.now()),
+    }
 @api.get("/recommend", name="Recommend a list of movies", tags=["inference"])
 def get_recommend_user(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
@@ -108,7 +135,7 @@ def get_recommend_user(
     Returns:
         dict: recommendation the user
     """
-    user_id, username = manage_authentication(credentials=credentials)
+    user_id, username, role = manage_authentication(credentials=credentials)
     predictions = make_predictions(
         user_ids=[
             user_id,
